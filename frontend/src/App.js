@@ -333,8 +333,8 @@ function LShapeKitchen({ cabinetColors }) {
         <meshLambertMaterial color="#f5f5f5" />
       </mesh>
 
-      {/* Main Wall Cabinets */}
-      <group position={[-4, 0, 0]}>
+      {/* Main Wall Cabinets - Facing Inward (towards corner) */}
+      <group position={[-4, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
         {Array.from({ length: 4 }, (_, i) => (
           <ModernCabinet 
             key={i}
@@ -350,8 +350,8 @@ function LShapeKitchen({ cabinetColors }) {
         ))}
       </group>
 
-      {/* Corner Wall Cabinets */}
-      <group position={[0, 0, 3]}>
+      {/* Corner Wall Cabinets - Facing Inward (towards corner) */}
+      <group position={[0, 0, 3]} rotation={[0, Math.PI, 0]}>
         {Array.from({ length: 3 }, (_, i) => (
           <ModernCabinet 
             key={i}
@@ -367,16 +367,18 @@ function LShapeKitchen({ cabinetColors }) {
         ))}
       </group>
 
-      {/* Corner Cabinet */}
-      <ModernCabinet 
-        position={[-3, -0.5, 2]}
-        size={[1.2, 2.5, 1.2]}
-        upperColor={upper}
-        middleColor={middle}
-        lowerColor={lower}
-        type="full"
-        doors={1}
-      />
+      {/* Corner Cabinet - Facing Corner */}
+      <group rotation={[0, Math.PI / 4, 0]}>
+        <ModernCabinet 
+          position={[-3, -0.5, 2]}
+          size={[1.2, 2.5, 1.2]}
+          upperColor={upper}
+          middleColor={middle}
+          lowerColor={lower}
+          type="full"
+          doors={1}
+        />
+      </group>
     </group>
   );
 }
