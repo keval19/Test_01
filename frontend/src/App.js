@@ -770,7 +770,7 @@ function LShapeKitchen({ cabinetColors }) {
 
 // Modern Island Kitchen Layout
 function IslandKitchen({ cabinetColors }) {
-  const { upper, middle, lower } = cabinetColors;
+  const { upper, middle, lower, wall } = cabinetColors;
   
   return (
     <group>
@@ -783,13 +783,13 @@ function IslandKitchen({ cabinetColors }) {
       {/* Back Wall Background */}
       <mesh position={[0, 0, -4]} receiveShadow>
         <boxGeometry args={[13, 4, 0.1]} />
-        <meshLambertMaterial color="#e8e8e8" />
+        <meshLambertMaterial color={wall} />
       </mesh>
 
       {/* Side Wall Background */}
       <mesh position={[-5, 0, 2]} receiveShadow>
         <boxGeometry args={[0.1, 4, 2]} />
-        <meshLambertMaterial color="#e8e8e8" />
+        <meshLambertMaterial color={wall} />
       </mesh>
 
       {/* Back Wall Cabinets */}
