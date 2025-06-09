@@ -276,8 +276,8 @@ function GalleyKitchen({ cabinetColors }) {
         <meshLambertMaterial color="#f5f5f5" />
       </mesh>
 
-      {/* Left Wall Cabinets */}
-      <group position={[-5, 0, 0]}>
+      {/* Left Wall Cabinets - Facing Right (towards island) */}
+      <group position={[-5, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
         {Array.from({ length: 4 }, (_, i) => (
           <ModernCabinet 
             key={i}
@@ -293,8 +293,8 @@ function GalleyKitchen({ cabinetColors }) {
         ))}
       </group>
 
-      {/* Right Wall Cabinets */}
-      <group position={[5, 0, 0]}>
+      {/* Right Wall Cabinets - Facing Left (towards island) */}
+      <group position={[5, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
         {Array.from({ length: 4 }, (_, i) => (
           <ModernCabinet 
             key={i}
