@@ -201,6 +201,12 @@ function ModernCabinet({
             <meshLambertMaterial color="#f5f5f5" />
           </mesh>
 
+          {/* Back Support Panel for Upper Cabinet */}
+          <mesh position={[0, 0, -depth/2 - 0.02]} castShadow receiveShadow>
+            <boxGeometry args={[width + 0.05, height + 0.1, 0.04]} />
+            <meshLambertMaterial color="#f5f5f5" />
+          </mesh>
+
           {/* Upper Cabinet Only */}
           <mesh castShadow>
             <boxGeometry args={[width, height, depth]} />
