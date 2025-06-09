@@ -99,8 +99,8 @@ function ModernCabinet({
                       <boxGeometry args={[doorWidth - 0.01, height * 0.48, 0.02]} />
                       <meshLambertMaterial color={lowerColor} />
                     </mesh>
-                    {/* Sleek Handle */}
-                    <mesh position={[doorX + doorWidth * 0.3, 0, depth/2 + 0.02]} castShadow>
+                    {/* Sleek Handle - positioned on opening edge */}
+                    <mesh position={[doorX + (i < doors/2 ? doorWidth * 0.3 : -doorWidth * 0.3), 0, depth/2 + 0.02]} castShadow>
                       <boxGeometry args={[0.01, height * 0.2, 0.01]} />
                       <meshLambertMaterial color="#8c8c8c" />
                     </mesh>
