@@ -266,7 +266,7 @@ function KitchenModel({ cabinetColors, currentModel }) {
 
 // Modern Galley Kitchen Layout - Based on Reference Image
 function GalleyKitchen({ cabinetColors }) {
-  const { upper, middle, lower } = cabinetColors;
+  const { upper, middle, lower, wall } = cabinetColors;
   
   return (
     <group>
@@ -279,7 +279,7 @@ function GalleyKitchen({ cabinetColors }) {
       {/* Back Wall */}
       <mesh position={[0, 0, -3]} receiveShadow>
         <boxGeometry args={[14, 4, 0.1]} />
-        <meshLambertMaterial color="#4a4a4a" />
+        <meshLambertMaterial color={wall} />
       </mesh>
 
       {/* Main Galley Kitchen Wall - Single Wall Layout */}
