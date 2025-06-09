@@ -429,6 +429,18 @@ function IslandKitchen({ cabinetColors }) {
         <meshLambertMaterial color="#f5f5f5" />
       </mesh>
 
+      {/* Back Wall Background */}
+      <mesh position={[0, 0, -4]} receiveShadow>
+        <boxGeometry args={[13, 4, 0.1]} />
+        <meshLambertMaterial color="#e8e8e8" />
+      </mesh>
+
+      {/* Side Wall Background */}
+      <mesh position={[-5, 0, 2]} receiveShadow>
+        <boxGeometry args={[0.1, 4, 2]} />
+        <meshLambertMaterial color="#e8e8e8" />
+      </mesh>
+
       {/* Back Wall Cabinets */}
       <group position={[0, 0, -4]}>
         {Array.from({ length: 6 }, (_, i) => (
