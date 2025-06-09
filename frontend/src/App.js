@@ -19,6 +19,12 @@ function ModernCabinet({
   
   return (
     <group position={position}>
+      {/* Individual Back Panel - positioned just behind this cabinet */}
+      <mesh position={[0, 0, -depth/2 - 0.01]} castShadow receiveShadow>
+        <boxGeometry args={[width + 0.02, height + 0.1, 0.02]} />
+        <meshLambertMaterial color="#e8e8e8" />
+      </mesh>
+
       {type === 'full' && (
         <>
           {/* Upper Cabinet Section */}
