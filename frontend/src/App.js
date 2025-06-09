@@ -327,18 +327,6 @@ function LShapeKitchen({ cabinetColors }) {
         <meshLambertMaterial color="#f5f5f5" />
       </mesh>
 
-      {/* Main Wall Background */}
-      <mesh position={[-4, 0, 0]} receiveShadow>
-        <boxGeometry args={[0.1, 4, 6]} />
-        <meshLambertMaterial color="#e8e8e8" />
-      </mesh>
-
-      {/* Corner Wall Background */}
-      <mesh position={[0, 0, 3]} receiveShadow>
-        <boxGeometry args={[5, 4, 0.1]} />
-        <meshLambertMaterial color="#e8e8e8" />
-      </mesh>
-
       {/* Main Wall Cabinets */}
       <group position={[-4, 0, 0]}>
         {Array.from({ length: 4 }, (_, i) => (
