@@ -993,8 +993,9 @@ function ModelSelector({ currentModel, onModelChange }) {
 function App() {
   const [cabinetColors, setCabinetColors] = useState({
     upper: '#FFFFFF',    // White upper cabinets
-    middle: '#374151',   // Dark gray countertops  
-    lower: '#1F2937'     // Dark lower cabinets
+    middle: '#1F2937',   // Black countertops  
+    lower: '#FFFFFF',    // White lower cabinets
+    wall: '#E5E7EB'      // Light gray walls
   });
   const [currentModel, setCurrentModel] = useState('galley');
 
