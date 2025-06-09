@@ -19,12 +19,6 @@ function ModernCabinet({
   
   return (
     <group position={position}>
-      {/* Back Support Panel - Full Height */}
-      <mesh position={[0, 0, -depth/2 - 0.02]} castShadow receiveShadow>
-        <boxGeometry args={[width + 0.05, height + 0.3, 0.04]} />
-        <meshLambertMaterial color="#f5f5f5" />
-      </mesh>
-
       {type === 'full' && (
         <>
           {/* Upper Cabinet Section */}
