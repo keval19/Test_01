@@ -270,18 +270,6 @@ function GalleyKitchen({ cabinetColors }) {
         <meshLambertMaterial color="#f5f5f5" />
       </mesh>
 
-      {/* Left Wall Background */}
-      <mesh position={[-5, 0, 0]} receiveShadow>
-        <boxGeometry args={[0.1, 4, 6]} />
-        <meshLambertMaterial color="#e8e8e8" />
-      </mesh>
-
-      {/* Right Wall Background */}
-      <mesh position={[5, 0, 0]} receiveShadow>
-        <boxGeometry args={[0.1, 4, 6]} />
-        <meshLambertMaterial color="#e8e8e8" />
-      </mesh>
-
       {/* Left Wall Cabinets */}
       <group position={[-5, 0, 0]}>
         {Array.from({ length: 4 }, (_, i) => (
