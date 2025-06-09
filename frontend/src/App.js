@@ -473,7 +473,7 @@ function GalleyKitchen({ cabinetColors }) {
   );
 }
 
-// Modern L-Shape Kitchen Layout
+// Modern L-Shape Kitchen Layout - Based on Reference Image
 function LShapeKitchen({ cabinetColors }) {
   const { upper, middle, lower } = cabinetColors;
   
@@ -481,55 +481,259 @@ function LShapeKitchen({ cabinetColors }) {
     <group>
       {/* Floor */}
       <mesh position={[0, -2, 0]} receiveShadow>
-        <boxGeometry args={[12, 0.1, 8]} />
+        <boxGeometry args={[12, 0.1, 10]} />
         <meshLambertMaterial color="#f5f5f5" />
       </mesh>
 
-      {/* Main Wall Cabinets - Facing Inward (towards corner) */}
-      <group position={[-4, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
-        {Array.from({ length: 4 }, (_, i) => (
+      {/* Back Wall */}
+      <mesh position={[0, 0, -4]} receiveShadow>
+        <boxGeometry args={[10, 4, 0.1]} />
+        <meshLambertMaterial color="#e8e8e8" />
+      </mesh>
+
+      {/* Side Wall */}
+      <mesh position={[-4, 0, 0]} receiveShadow>
+        <boxGeometry args={[0.1, 4, 8]} />
+        <meshLambertMaterial color="#e8e8e8" />
+      </mesh>
+
+      {/* Main Wall Cabinets - Left Side */}
+      <group position={[-3.5, 0, -3.5]}>
+        
+        {/* Cabinet Set 1 - Built-in Appliance Area */}
+        <group position={[0, 0, 0]}>
+          {/* Lower Cabinet */}
           <ModernCabinet 
-            key={i}
-            position={[0, -0.5, -3 + i * 1.5]}
-            size={[1, 2.5, 0.6]}
+            position={[0, -1.2, 0]}
+            size={[1.2, 1.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="base"
+            doors={1}
+            hasCountertop={true}
+          />
+          
+          {/* Built-in Oven */}
+          <mesh position={[0, 0.2, 0.1]} castShadow>
+            <boxGeometry args={[0.6, 0.6, 0.5]} />
+            <meshLambertMaterial color="#2c2c2c" />
+          </mesh>
+          
+          {/* Built-in Microwave Above */}
+          <mesh position={[0, 0.9, 0.1]} castShadow>
+            <boxGeometry args={[0.6, 0.4, 0.4]} />
+            <meshLambertMaterial color="#2c2c2c" />
+          </mesh>
+
+          {/* Upper Cabinet Above Appliances */}
+          <ModernCabinet 
+            position={[0, 1.6, 0]}
+            size={[1.2, 0.8, 0.4]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="upper"
+            doors={1}
+          />
+        </group>
+
+        {/* Cabinet Set 2 */}
+        <group position={[1.5, 0, 0]}>
+          <ModernCabinet 
+            position={[0, -0.5, 0]}
+            size={[1.2, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={1}
+            drawers={2}
+          />
+        </group>
+
+        {/* Cabinet Set 3 */}
+        <group position={[2.8, 0, 0]}>
+          <ModernCabinet 
+            position={[0, -0.5, 0]}
+            size={[1.2, 2.5, 0.6]}
             upperColor={upper}
             middleColor={middle}
             lowerColor={lower}
             type="full"
             doors={2}
-            drawers={i === 1 ? 3 : 0}
+            drawers={0}
           />
-        ))}
-      </group>
+        </group>
 
-      {/* Corner Wall Cabinets - Facing Inward (towards corner) */}
-      <group position={[0, 0, 3]} rotation={[0, Math.PI, 0]}>
-        {Array.from({ length: 3 }, (_, i) => (
+        {/* Floating Shelves Section */}
+        <group position={[4.2, 0, 0]}>
+          {/* Lower Cabinet Only */}
           <ModernCabinet 
-            key={i}
-            position={[-2 + i * 1.5, -0.5, 0]}
-            size={[1, 2.5, 0.6]}
+            position={[0, -1.2, 0]}
+            size={[1, 1.5, 0.6]}
             upperColor={upper}
             middleColor={middle}
             lowerColor={lower}
-            type="full"
-            doors={i === 1 ? 2 : 1}
-            drawers={i === 0 ? 2 : 0}
+            type="base"
+            doors={1}
+            hasCountertop={true}
           />
-        ))}
+          
+          {/* Floating Shelves */}
+          <mesh position={[0, 0.6, -0.2]} castShadow>
+            <boxGeometry args={[0.8, 0.05, 0.25]} />
+            <meshLambertMaterial color={upper} />
+          </mesh>
+          <mesh position={[0, 1.0, -0.2]} castShadow>
+            <boxGeometry args={[0.8, 0.05, 0.25]} />
+            <meshLambertMaterial color={upper} />
+          </mesh>
+          <mesh position={[0, 1.4, -0.2]} castShadow>
+            <boxGeometry args={[0.8, 0.05, 0.25]} />
+            <meshLambertMaterial color={upper} />
+          </mesh>
+        </group>
       </group>
 
-      {/* Corner Cabinet - Facing Corner */}
-      <group rotation={[0, Math.PI / 4, 0]}>
+      {/* Corner Cabinet - Special Corner Design */}
+      <group position={[-3.2, 0, -2.5]} rotation={[0, Math.PI / 4, 0]}>
         <ModernCabinet 
-          position={[-3, -0.5, 2]}
-          size={[1.2, 2.5, 1.2]}
+          position={[0, -0.5, 0]}
+          size={[1.4, 2.5, 1.4]}
           upperColor={upper}
           middleColor={middle}
           lowerColor={lower}
           type="full"
           doors={1}
+          drawers={0}
         />
+      </group>
+
+      {/* Corner Wall Cabinets - Right Side */}
+      <group position={[-3.5, 0, 0]}>
+        
+        {/* Corner Sink Cabinet */}
+        <group position={[0, 0, -1.5]}>
+          {/* Lower Sink Cabinet */}
+          <ModernCabinet 
+            position={[0, -1.2, 0]}
+            size={[1.5, 1.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="base"
+            doors={2}
+            hasCountertop={true}
+          />
+          
+          {/* Sink */}
+          <mesh position={[0, -0.05, 0.1]} castShadow>
+            <boxGeometry args={[0.6, 0.1, 0.4]} />
+            <meshLambertMaterial color="#c0c0c0" />
+          </mesh>
+          
+          {/* Faucet */}
+          <mesh position={[0, 0.3, 0.1]} castShadow>
+            <cylinderGeometry args={[0.02, 0.02, 0.4]} />
+            <meshLambertMaterial color="#c0c0c0" />
+          </mesh>
+
+          {/* Upper Cabinet Above Sink */}
+          <ModernCabinet 
+            position={[0, 1.2, 0]}
+            size={[1.5, 1, 0.4]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="upper"
+            doors={2}
+          />
+        </group>
+
+        {/* Cabinet Set 4 */}
+        <group position={[0, 0, -0.2]}>
+          <ModernCabinet 
+            position={[0, -0.5, 0]}
+            size={[1.2, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={1}
+            drawers={3}
+          />
+        </group>
+
+        {/* Cabinet Set 5 */}
+        <group position={[0, 0, 1.2]}>
+          <ModernCabinet 
+            position={[0, -0.5, 0]}
+            size={[1.2, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={2}
+            drawers={0}
+          />
+        </group>
+
+        {/* Cabinet Set 6 - End Cabinet */}
+        <group position={[0, 0, 2.5]}>
+          <ModernCabinet 
+            position={[0, -0.5, 0]}
+            size={[1, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={1}
+            drawers={2}
+          />
+        </group>
+      </group>
+
+      {/* Continuous Countertops */}
+      {/* Main Wall Countertop */}
+      <mesh position={[-0.5, -0.1, -3.5]} castShadow>
+        <boxGeometry args={[8, 0.1, 0.7]} />
+        <meshLambertMaterial color={middle} />
+      </mesh>
+
+      {/* Side Wall Countertop */}
+      <mesh position={[-3.5, -0.1, 0.5]} castShadow>
+        <boxGeometry args={[0.7, 0.1, 6]} />
+        <meshLambertMaterial color={middle} />
+      </mesh>
+
+      {/* Corner Countertop */}
+      <mesh position={[-3.2, -0.1, -2.5]} castShadow>
+        <boxGeometry args={[1, 0.1, 1]} />
+        <meshLambertMaterial color={middle} />
+      </mesh>
+
+      {/* Under Cabinet Lighting */}
+      {Array.from({ length: 5 }, (_, i) => (
+        <mesh key={i} position={[-1 + i * 1.5, 0.4, -3.2]} castShadow>
+          <boxGeometry args={[1.2, 0.02, 0.05]} />
+          <meshLambertMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.2} />
+        </mesh>
+      ))}
+
+      {Array.from({ length: 4 }, (_, i) => (
+        <mesh key={i} position={[-3.2, 0.4, -1 + i * 1.2]} castShadow>
+          <boxGeometry args={[0.05, 0.02, 1]} />
+          <meshLambertMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.2} />
+        </mesh>
+      ))}
+
+      {/* Dishwasher - Integrated */}
+      <group position={[-3.5, -1.5, 1.2]}>
+        <mesh castShadow>
+          <boxGeometry args={[0.6, 0.8, 0.6]} />
+          <meshLambertMaterial color="#4a4a4a" />
+        </mesh>
       </group>
     </group>
   );
