@@ -837,7 +837,8 @@ function MultiSectionColorPicker({ cabinetColors, onColorChange }) {
   const sections = [
     { key: 'upper', name: 'Upper Cabinets', icon: '⬆️' },
     { key: 'middle', name: 'Countertops', icon: '▬' },
-    { key: 'lower', name: 'Lower Cabinets', icon: '⬇️' }
+    { key: 'lower', name: 'Lower Cabinets', icon: '⬇️' },
+    { key: 'wall', name: 'Wall Color', icon: '🧱' }
   ];
 
   return (
@@ -889,11 +890,12 @@ function MultiSectionColorPicker({ cabinetColors, onColorChange }) {
             className="w-full p-2 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => {
               onColorChange('upper', '#FFFFFF');
-              onColorChange('middle', '#374151');
-              onColorChange('lower', '#1F2937');
+              onColorChange('middle', '#1F2937');
+              onColorChange('lower', '#FFFFFF');
+              onColorChange('wall', '#E5E7EB');
             }}
           >
-            <span className="font-medium">Modern Contrast:</span> White + Charcoal + Black
+            <span className="font-medium">Modern Classic:</span> White + Black + Light Gray Wall
           </button>
           <button 
             className="w-full p-2 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -901,9 +903,10 @@ function MultiSectionColorPicker({ cabinetColors, onColorChange }) {
               onColorChange('upper', '#D2B48C');
               onColorChange('middle', '#8B4513');
               onColorChange('lower', '#654321');
+              onColorChange('wall', '#FDF6E3');
             }}
           >
-            <span className="font-medium">Natural Wood:</span> Oak + Cherry + Walnut
+            <span className="font-medium">Natural Wood:</span> Oak + Cherry + Walnut + Cream Wall
           </button>
           <button 
             className="w-full p-2 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -911,9 +914,10 @@ function MultiSectionColorPicker({ cabinetColors, onColorChange }) {
               onColorChange('upper', '#E5E7EB');
               onColorChange('middle', '#FFFFFF');
               onColorChange('lower', '#9CAF88');
+              onColorChange('wall', '#FFFFFF');
             }}
           >
-            <span className="font-medium">Soft Modern:</span> Light Gray + White + Sage
+            <span className="font-medium">Soft Modern:</span> Light Gray + White + Sage + White Wall
           </button>
         </div>
       </div>
