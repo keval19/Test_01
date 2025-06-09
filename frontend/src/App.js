@@ -3,151 +3,265 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Text } from '@react-three/drei';
 import './App.css';
 
-// Sophisticated Cabinet Component
-function SophisticatedCabinet({ 
+// Modern Cabinet Component matching the uploaded image style
+function ModernCabinet({ 
   position, 
   size, 
-  cabinetColor, 
-  type = 'base', // 'base', 'upper', 'tall'
+  upperColor,
+  middleColor, 
+  lowerColor,
+  type = 'full', // 'full', 'base', 'upper'
   doors = 2,
-  drawers = 0 
+  drawers = 0,
+  hasCountertop = false
 }) {
   const [width, height, depth] = size;
   
   return (
     <group position={position}>
-      {/* Cabinet Box/Frame */}
-      <mesh castShadow>
-        <boxGeometry args={[width, height, depth]} />
-        <meshLambertMaterial color={cabinetColor} />
-      </mesh>
-      
-      {/* Cabinet Doors */}
-      {Array.from({ length: doors }, (_, i) => {
-        const doorWidth = (width - 0.05) / doors;
-        const doorX = -width/2 + doorWidth/2 + i * doorWidth + 0.025;
-        
-        return (
-          <group key={i}>
-            {/* Door Panel */}
-            <mesh position={[doorX, 0, depth/2 + 0.02]} castShadow>
-              <boxGeometry args={[doorWidth - 0.02, height - 0.1, 0.03]} />
-              <meshLambertMaterial color={cabinetColor} />
+      {type === 'full' && (
+        <>
+          {/* Upper Cabinet Section */}
+          <group position={[0, height * 0.25, 0]}>
+            {/* Upper Cabinet Body */}
+            <mesh castShadow>
+              <boxGeometry args={[width, height * 0.4, depth * 0.7]} />
+              <meshLambertMaterial color={upperColor} />
             </mesh>
             
-            {/* Door Frame */}
-            <mesh position={[doorX, 0, depth/2 + 0.035]} castShadow>
-              <boxGeometry args={[doorWidth - 0.06, height - 0.14, 0.01]} />
-              <meshLambertMaterial color="#f8f8f8" />
-            </mesh>
-            
-            {/* Door Handle */}
-            <mesh position={[doorX + doorWidth/3, 0, depth/2 + 0.05]} castShadow>
-              <cylinderGeometry args={[0.008, 0.008, 0.15]} />
-              <meshLambertMaterial color="#c0c0c0" />
+            {/* Upper Cabinet Doors */}
+            {Array.from({ length: doors }, (_, i) => {
+              const doorWidth = (width - 0.02) / doors;
+              const doorX = -width/2 + doorWidth/2 + i * doorWidth + 0.01;
+              
+              return (
+                <group key={i}>
+                  <mesh position={[doorX, 0, depth * 0.35 + 0.01]} castShadow>
+                    <boxGeometry args={[doorWidth - 0.01, height * 0.38, 0.02]} />
+                    <meshLambertMaterial color={upperColor} />
+                  </mesh>
+                  {/* Sleek Handle */}
+                  <mesh position={[doorX + doorWidth * 0.3, 0, depth * 0.35 + 0.02]} castShadow>
+                    <boxGeometry args={[0.01, height * 0.15, 0.01]} />
+                    <meshLambertMaterial color="#8c8c8c" />
+                  </mesh>
+                </group>
+              );
+            })}
+          </group>
+
+          {/* Middle Section (Countertop/Backsplash area) */}
+          <group position={[0, -height * 0.15, 0]}>
+            <mesh castShadow>
+              <boxGeometry args={[width + 0.05, height * 0.15, depth + 0.05]} />
+              <meshLambertMaterial color={middleColor} />
             </mesh>
           </group>
-        );
-      })}
-      
-      {/* Drawers (if any) */}
-      {Array.from({ length: drawers }, (_, i) => {
-        const drawerHeight = height / (drawers + doors);
-        const drawerY = height/2 - drawerHeight/2 - i * drawerHeight;
-        
-        return (
-          <group key={i}>
-            {/* Drawer Front */}
-            <mesh position={[0, drawerY, depth/2 + 0.02]} castShadow>
-              <boxGeometry args={[width - 0.05, drawerHeight - 0.02, 0.03]} />
-              <meshLambertMaterial color={cabinetColor} />
+
+          {/* Lower Cabinet Section */}
+          <group position={[0, -height * 0.35, 0]}>
+            {/* Lower Cabinet Body */}
+            <mesh castShadow>
+              <boxGeometry args={[width, height * 0.5, depth]} />
+              <meshLambertMaterial color={lowerColor} />
             </mesh>
             
-            {/* Drawer Handle */}
-            <mesh position={[0, drawerY, depth/2 + 0.05]} castShadow>
-              <cylinderGeometry args={[0.008, 0.008, width * 0.6]} />
-              <meshLambertMaterial color="#c0c0c0" />
+            {/* Lower Cabinet Doors/Drawers */}
+            {drawers > 0 ? (
+              // Drawer Configuration
+              Array.from({ length: drawers }, (_, i) => {
+                const drawerHeight = (height * 0.48) / drawers;
+                const drawerY = height * 0.24 - drawerHeight/2 - i * drawerHeight;
+                
+                return (
+                  <group key={i}>
+                    <mesh position={[0, drawerY, depth/2 + 0.01]} castShadow>
+                      <boxGeometry args={[width - 0.02, drawerHeight - 0.01, 0.02]} />
+                      <meshLambertMaterial color={lowerColor} />
+                    </mesh>
+                    {/* Modern Drawer Handle */}
+                    <mesh position={[0, drawerY, depth/2 + 0.02]} castShadow>
+                      <boxGeometry args={[width * 0.6, 0.01, 0.01]} />
+                      <meshLambertMaterial color="#8c8c8c" />
+                    </mesh>
+                  </group>
+                );
+              })
+            ) : (
+              // Door Configuration
+              Array.from({ length: doors }, (_, i) => {
+                const doorWidth = (width - 0.02) / doors;
+                const doorX = -width/2 + doorWidth/2 + i * doorWidth + 0.01;
+                
+                return (
+                  <group key={i}>
+                    <mesh position={[doorX, 0, depth/2 + 0.01]} castShadow>
+                      <boxGeometry args={[doorWidth - 0.01, height * 0.48, 0.02]} />
+                      <meshLambertMaterial color={lowerColor} />
+                    </mesh>
+                    {/* Sleek Handle */}
+                    <mesh position={[doorX + doorWidth * 0.3, 0, depth/2 + 0.02]} castShadow>
+                      <boxGeometry args={[0.01, height * 0.2, 0.01]} />
+                      <meshLambertMaterial color="#8c8c8c" />
+                    </mesh>
+                  </group>
+                );
+              })
+            )}
+            
+            {/* Toe Kick */}
+            <mesh position={[0, -height * 0.25 - 0.05, depth/2 - 0.05]} castShadow>
+              <boxGeometry args={[width, 0.1, 0.1]} />
+              <meshLambertMaterial color="#1a1a1a" />
             </mesh>
           </group>
-        );
-      })}
-      
-      {/* Crown Molding (for upper cabinets) */}
-      {type === 'upper' && (
-        <mesh position={[0, height/2 + 0.05, 0]} castShadow>
-          <boxGeometry args={[width + 0.1, 0.1, depth + 0.1]} />
-          <meshLambertMaterial color={cabinetColor} />
-        </mesh>
+        </>
       )}
-      
-      {/* Toe Kick (for base cabinets) */}
+
       {type === 'base' && (
-        <mesh position={[0, -height/2 - 0.05, depth/2 - 0.05]} castShadow>
-          <boxGeometry args={[width, 0.1, 0.1]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
+        <group>
+          {/* Base Cabinet Only */}
+          <mesh castShadow>
+            <boxGeometry args={[width, height, depth]} />
+            <meshLambertMaterial color={lowerColor} />
+          </mesh>
+          
+          {/* Doors/Drawers for base cabinet */}
+          {drawers > 0 ? (
+            Array.from({ length: drawers }, (_, i) => {
+              const drawerHeight = (height - 0.1) / drawers;
+              const drawerY = height/2 - drawerHeight/2 - i * drawerHeight - 0.05;
+              
+              return (
+                <group key={i}>
+                  <mesh position={[0, drawerY, depth/2 + 0.01]} castShadow>
+                    <boxGeometry args={[width - 0.02, drawerHeight - 0.01, 0.02]} />
+                    <meshLambertMaterial color={lowerColor} />
+                  </mesh>
+                  <mesh position={[0, drawerY, depth/2 + 0.02]} castShadow>
+                    <boxGeometry args={[width * 0.6, 0.01, 0.01]} />
+                    <meshLambertMaterial color="#8c8c8c" />
+                  </mesh>
+                </group>
+              );
+            })
+          ) : (
+            Array.from({ length: doors }, (_, i) => {
+              const doorWidth = (width - 0.02) / doors;
+              const doorX = -width/2 + doorWidth/2 + i * doorWidth + 0.01;
+              
+              return (
+                <group key={i}>
+                  <mesh position={[doorX, 0, depth/2 + 0.01]} castShadow>
+                    <boxGeometry args={[doorWidth - 0.01, height - 0.1, 0.02]} />
+                    <meshLambertMaterial color={lowerColor} />
+                  </mesh>
+                  <mesh position={[doorX + doorWidth * 0.3, 0, depth/2 + 0.02]} castShadow>
+                    <boxGeometry args={[0.01, height * 0.4, 0.01]} />
+                    <meshLambertMaterial color="#8c8c8c" />
+                  </mesh>
+                </group>
+              );
+            })
+          )}
+          
+          {/* Toe Kick */}
+          <mesh position={[0, -height/2 - 0.05, depth/2 - 0.05]} castShadow>
+            <boxGeometry args={[width, 0.1, 0.1]} />
+            <meshLambertMaterial color="#1a1a1a" />
+          </mesh>
+
+          {/* Countertop if specified */}
+          {hasCountertop && (
+            <mesh position={[0, height/2 + 0.05, 0]} castShadow>
+              <boxGeometry args={[width + 0.05, 0.1, depth + 0.05]} />
+              <meshLambertMaterial color={middleColor} />
+            </mesh>
+          )}
+        </group>
+      )}
+
+      {type === 'upper' && (
+        <group>
+          {/* Upper Cabinet Only */}
+          <mesh castShadow>
+            <boxGeometry args={[width, height, depth]} />
+            <meshLambertMaterial color={upperColor} />
+          </mesh>
+          
+          {/* Upper Cabinet Doors */}
+          {Array.from({ length: doors }, (_, i) => {
+            const doorWidth = (width - 0.02) / doors;
+            const doorX = -width/2 + doorWidth/2 + i * doorWidth + 0.01;
+            
+            return (
+              <group key={i}>
+                <mesh position={[doorX, 0, depth/2 + 0.01]} castShadow>
+                  <boxGeometry args={[doorWidth - 0.01, height - 0.05, 0.02]} />
+                  <meshLambertMaterial color={upperColor} />
+                </mesh>
+                <mesh position={[doorX + doorWidth * 0.3, 0, depth/2 + 0.02]} castShadow>
+                  <boxGeometry args={[0.01, height * 0.3, 0.01]} />
+                  <meshLambertMaterial color="#8c8c8c" />
+                </mesh>
+              </group>
+            );
+          })}
+        </group>
       )}
     </group>
   );
 }
 
-// Kitchen Island with sophisticated design
-function KitchenIsland({ cabinetColor, size }) {
+// Modern Kitchen Island
+function ModernKitchenIsland({ upperColor, middleColor, lowerColor, size }) {
   const [width, height, depth] = size;
   
   return (
     <group>
-      {/* Main Island Base */}
-      <SophisticatedCabinet 
+      {/* Island Base */}
+      <ModernCabinet 
         position={[0, -height/2, 0]}
         size={[width, height, depth]}
-        cabinetColor={cabinetColor}
+        upperColor={upperColor}
+        middleColor={middleColor}
+        lowerColor={lowerColor}
         type="base"
         doors={4}
-        drawers={2}
+        drawers={0}
+        hasCountertop={true}
       />
       
-      {/* Countertop */}
+      {/* Extended Countertop */}
       <mesh position={[0, 0.05, 0]} castShadow>
-        <boxGeometry args={[width + 0.1, 0.1, depth + 0.1]} />
-        <meshLambertMaterial color="#2c2c2c" />
+        <boxGeometry args={[width + 0.2, 0.12, depth + 0.2]} />
+        <meshLambertMaterial color={middleColor} />
       </mesh>
       
-      {/* Countertop Edge Detail */}
-      <mesh position={[0, 0.08, 0]} castShadow>
-        <boxGeometry args={[width + 0.12, 0.04, depth + 0.12]} />
+      {/* Modern Edge Detail */}
+      <mesh position={[0, 0.1, 0]} castShadow>
+        <boxGeometry args={[width + 0.22, 0.02, depth + 0.22]} />
         <meshLambertMaterial color="#1a1a1a" />
       </mesh>
-      
-      {/* Island Legs/Support Posts */}
-      {[
-        [-width/2 + 0.2, -height/2, -depth/2 + 0.2],
-        [width/2 - 0.2, -height/2, -depth/2 + 0.2],
-        [-width/2 + 0.2, -height/2, depth/2 - 0.2],
-        [width/2 - 0.2, -height/2, depth/2 - 0.2]
-      ].map((pos, i) => (
-        <mesh key={i} position={pos} castShadow>
-          <boxGeometry args={[0.1, height, 0.1]} />
-          <meshLambertMaterial color={cabinetColor} />
-        </mesh>
-      ))}
     </group>
   );
 }
 
 // Kitchen Model Component
-function KitchenModel({ cabinetColor, currentModel }) {
+function KitchenModel({ cabinetColors, currentModel }) {
   const models = {
-    galley: <GalleyKitchen cabinetColor={cabinetColor} />,
-    lshape: <LShapeKitchen cabinetColor={cabinetColor} />,
-    island: <IslandKitchen cabinetColor={cabinetColor} />
+    galley: <GalleyKitchen cabinetColors={cabinetColors} />,
+    lshape: <LShapeKitchen cabinetColors={cabinetColors} />,
+    island: <IslandKitchen cabinetColors={cabinetColors} />
   };
 
   return models[currentModel];
 }
 
-// Enhanced Galley Kitchen Layout
-function GalleyKitchen({ cabinetColor }) {
+// Modern Galley Kitchen Layout
+function GalleyKitchen({ cabinetColors }) {
+  const { upper, middle, lower } = cabinetColors;
+  
   return (
     <group>
       {/* Floor */}
@@ -158,156 +272,53 @@ function GalleyKitchen({ cabinetColor }) {
 
       {/* Left Wall Cabinets */}
       <group position={[-5, 0, 0]}>
-        {/* Lower Cabinets - Different Sizes */}
-        <SophisticatedCabinet 
-          position={[0, -1, -2.5]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, -1, -1]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={2}
-          drawers={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, -1, 0.5]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={1}
-          drawers={2}
-        />
-        <SophisticatedCabinet 
-          position={[0, -1, 2]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={2}
-        />
-
-        {/* Upper Cabinets */}
-        <SophisticatedCabinet 
-          position={[0, 1.5, -2.5]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, 1.5, -1]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={2}
-        />
-        <SophisticatedCabinet 
-          position={[0, 1.5, 0.5]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, 1.5, 2]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={2}
-        />
-
-        {/* Countertop */}
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <boxGeometry args={[1.2, 0.1, 5.2]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
+        {Array.from({ length: 4 }, (_, i) => (
+          <ModernCabinet 
+            key={i}
+            position={[0, -0.5, -2.5 + i * 1.5]}
+            size={[1, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={i % 2 === 0 ? 1 : 2}
+            drawers={i === 1 ? 3 : 0}
+          />
+        ))}
       </group>
 
       {/* Right Wall Cabinets */}
       <group position={[5, 0, 0]}>
-        {/* Lower Cabinets */}
-        <SophisticatedCabinet 
-          position={[0, -1, -2.5]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, -1, -1]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={1}
-          drawers={3}
-        />
-        <SophisticatedCabinet 
-          position={[0, -1, 0.5]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={2}
-        />
-        <SophisticatedCabinet 
-          position={[0, -1, 2]}
-          size={[1, 1.5, 0.6]}
-          cabinetColor={cabinetColor}
-          type="base"
-          doors={1}
-        />
-
-        {/* Upper Cabinets */}
-        <SophisticatedCabinet 
-          position={[0, 1.5, -2.5]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, 1.5, -1]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={2}
-        />
-        <SophisticatedCabinet 
-          position={[0, 1.5, 0.5]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={1}
-        />
-        <SophisticatedCabinet 
-          position={[0, 1.5, 2]}
-          size={[1, 1, 0.4]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={2}
-        />
-
-        {/* Countertop */}
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <boxGeometry args={[1.2, 0.1, 5.2]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
+        {Array.from({ length: 4 }, (_, i) => (
+          <ModernCabinet 
+            key={i}
+            position={[0, -0.5, -2.5 + i * 1.5]}
+            size={[1, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={i % 2 === 0 ? 2 : 1}
+            drawers={i === 2 ? 4 : 0}
+          />
+        ))}
       </group>
 
       {/* Kitchen Island */}
-      <KitchenIsland 
-        cabinetColor={cabinetColor}
-        size={[3, 1.5, 1.5]}
+      <ModernKitchenIsland 
+        upperColor={upper}
+        middleColor={middle}
+        lowerColor={lower}
+        size={[3, 1.8, 1.5]}
       />
     </group>
   );
 }
 
-// Enhanced L-Shape Kitchen Layout
-function LShapeKitchen({ cabinetColor }) {
+// Modern L-Shape Kitchen Layout
+function LShapeKitchen({ cabinetColors }) {
+  const { upper, middle, lower } = cabinetColors;
+  
   return (
     <group>
       {/* Floor */}
@@ -319,71 +330,55 @@ function LShapeKitchen({ cabinetColor }) {
       {/* Main Wall Cabinets */}
       <group position={[-4, 0, 0]}>
         {Array.from({ length: 4 }, (_, i) => (
-          <group key={i}>
-            <SophisticatedCabinet 
-              position={[0, -1, -3 + i * 1.5]}
-              size={[1, 1.5, 0.6]}
-              cabinetColor={cabinetColor}
-              type="base"
-              doors={i % 2 === 0 ? 1 : 2}
-              drawers={i === 1 ? 2 : 0}
-            />
-            <SophisticatedCabinet 
-              position={[0, 1.5, -3 + i * 1.5]}
-              size={[1, 1, 0.4]}
-              cabinetColor={cabinetColor}
-              type="upper"
-              doors={i % 2 === 0 ? 1 : 2}
-            />
-          </group>
+          <ModernCabinet 
+            key={i}
+            position={[0, -0.5, -3 + i * 1.5]}
+            size={[1, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={2}
+            drawers={i === 1 ? 3 : 0}
+          />
         ))}
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <boxGeometry args={[1.2, 0.1, 6.2]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
       </group>
 
       {/* Corner Wall Cabinets */}
       <group position={[0, 0, 3]}>
         {Array.from({ length: 3 }, (_, i) => (
-          <group key={i}>
-            <SophisticatedCabinet 
-              position={[-2 + i * 1.5, -1, 0]}
-              size={[1, 1.5, 0.6]}
-              cabinetColor={cabinetColor}
-              type="base"
-              doors={i === 1 ? 2 : 1}
-              drawers={i === 0 ? 1 : 0}
-            />
-            <SophisticatedCabinet 
-              position={[-2 + i * 1.5, 1.5, 0]}
-              size={[1, 1, 0.4]}
-              cabinetColor={cabinetColor}
-              type="upper"
-              doors={i === 1 ? 2 : 1}
-            />
-          </group>
+          <ModernCabinet 
+            key={i}
+            position={[-2 + i * 1.5, -0.5, 0]}
+            size={[1, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={i === 1 ? 2 : 1}
+            drawers={i === 0 ? 2 : 0}
+          />
         ))}
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <boxGeometry args={[4.7, 0.1, 1.2]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
       </group>
 
       {/* Corner Cabinet */}
-      <SophisticatedCabinet 
-        position={[-3, -1, 2]}
-        size={[1.2, 1.5, 1.2]}
-        cabinetColor={cabinetColor}
-        type="base"
+      <ModernCabinet 
+        position={[-3, -0.5, 2]}
+        size={[1.2, 2.5, 1.2]}
+        upperColor={upper}
+        middleColor={middle}
+        lowerColor={lower}
+        type="full"
         doors={1}
       />
     </group>
   );
 }
 
-// Enhanced Island Kitchen Layout
-function IslandKitchen({ cabinetColor }) {
+// Modern Island Kitchen Layout
+function IslandKitchen({ cabinetColors }) {
+  const { upper, middle, lower } = cabinetColors;
+  
   return (
     <group>
       {/* Floor */}
@@ -395,120 +390,156 @@ function IslandKitchen({ cabinetColor }) {
       {/* Back Wall Cabinets */}
       <group position={[0, 0, -4]}>
         {Array.from({ length: 6 }, (_, i) => (
-          <group key={i}>
-            <SophisticatedCabinet 
-              position={[-6 + i * 2, -1, 0]}
-              size={[1.5, 1.5, 0.6]}
-              cabinetColor={cabinetColor}
-              type="base"
-              doors={i % 3 === 0 ? 1 : 2}
-              drawers={i % 3 === 1 ? 2 : 0}
-            />
-            <SophisticatedCabinet 
-              position={[-6 + i * 2, 1.5, 0]}
-              size={[1.5, 1, 0.4]}
-              cabinetColor={cabinetColor}
-              type="upper"
-              doors={i % 3 === 0 ? 1 : 2}
-            />
-          </group>
+          <ModernCabinet 
+            key={i}
+            position={[-6 + i * 2, -0.5, 0]}
+            size={[1.5, 2.5, 0.6]}
+            upperColor={upper}
+            middleColor={middle}
+            lowerColor={lower}
+            type="full"
+            doors={2}
+            drawers={i % 3 === 1 ? 3 : 0}
+          />
         ))}
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <boxGeometry args={[13, 0.1, 1.2]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
       </group>
 
       {/* Large Kitchen Island */}
-      <KitchenIsland 
-        cabinetColor={cabinetColor}
-        size={[4, 1.5, 2]}
+      <ModernKitchenIsland 
+        upperColor={upper}
+        middleColor={middle}
+        lowerColor={lower}
+        size={[4.5, 1.8, 2.2]}
       />
 
       {/* Side Cabinets */}
       <group position={[-5, 0, 2]}>
-        <SophisticatedCabinet 
-          position={[0, -1, 0]}
-          size={[1, 1.5, 1.5]}
-          cabinetColor={cabinetColor}
-          type="base"
+        <ModernCabinet 
+          position={[0, -0.5, 0]}
+          size={[1, 2.5, 1.5]}
+          upperColor={upper}
+          middleColor={middle}
+          lowerColor={lower}
+          type="full"
           doors={2}
-          drawers={1}
+          drawers={2}
         />
-        <SophisticatedCabinet 
-          position={[0, 1.5, 0]}
-          size={[1, 1, 1.5]}
-          cabinetColor={cabinetColor}
-          type="upper"
-          doors={2}
-        />
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <boxGeometry args={[1.2, 0.1, 1.7]} />
-          <meshLambertMaterial color="#2c2c2c" />
-        </mesh>
       </group>
 
       {/* Tall Pantry Cabinet */}
-      <SophisticatedCabinet 
-        position={[5, 0, 2]}
-        size={[1, 3, 0.6]}
-        cabinetColor={cabinetColor}
-        type="tall"
+      <ModernCabinet 
+        position={[5, 0.5, 2]}
+        size={[1, 4, 0.6]}
+        upperColor={upper}
+        middleColor={middle}
+        lowerColor={lower}
+        type="base"
         doors={2}
+        hasCountertop={false}
       />
     </group>
   );
 }
 
-// Color Picker Component
-function ColorPicker({ selectedColor, onColorChange }) {
+// Multi-Section Color Picker Component
+function MultiSectionColorPicker({ cabinetColors, onColorChange }) {
   const colors = [
-    { name: 'Oak Wood', color: '#D2B48C' },
-    { name: 'Cherry Wood', color: '#8B4513' },
-    { name: 'Maple Wood', color: '#F5DEB3' },
-    { name: 'Walnut', color: '#654321' },
-    { name: 'White Shaker', color: '#FFFFFF' },
-    { name: 'Charcoal Black', color: '#2C2C2C' },
-    { name: 'Navy Blue', color: '#1e3a8a' },
+    { name: 'White', color: '#FFFFFF' },
+    { name: 'Light Gray', color: '#E5E7EB' },
+    { name: 'Charcoal', color: '#374151' },
+    { name: 'Black', color: '#1F2937' },
+    { name: 'Navy', color: '#1E3A8A' },
     { name: 'Forest Green', color: '#166534' },
-    { name: 'Cream', color: '#FDF6E3' },
+    { name: 'Oak', color: '#D2B48C' },
+    { name: 'Cherry', color: '#8B4513' },
+    { name: 'Walnut', color: '#654321' },
     { name: 'Espresso', color: '#3C2415' },
-    { name: 'Sage Green', color: '#9CAF88' },
-    { name: 'Dove Gray', color: '#6B7280' }
+    { name: 'Cream', color: '#FDF6E3' },
+    { name: 'Sage', color: '#9CAF88' }
+  ];
+
+  const sections = [
+    { key: 'upper', name: 'Upper Cabinets', icon: '⬆️' },
+    { key: 'middle', name: 'Countertops', icon: '▬' },
+    { key: 'lower', name: 'Lower Cabinets', icon: '⬇️' }
   ];
 
   return (
-    <div className="color-picker">
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">Premium Cabinet Finishes</h3>
-      <div className="grid grid-cols-4 gap-3">
-        {colors.map((colorOption) => (
-          <button
-            key={colorOption.name}
-            className={`
-              w-14 h-14 rounded-lg border-2 transition-all duration-200 hover:scale-110 relative
-              ${selectedColor === colorOption.color 
-                ? 'border-blue-500 shadow-lg ring-2 ring-blue-200' 
-                : 'border-gray-300 hover:border-gray-400'
-              }
-            `}
-            style={{ backgroundColor: colorOption.color }}
-            onClick={() => onColorChange(colorOption.color)}
-            title={colorOption.name}
+    <div className="multi-color-picker">
+      <h3 className="text-lg font-semibold mb-4 text-gray-800">Cabinet Section Colors</h3>
+      
+      {sections.map(section => (
+        <div key={section.key} className="section-picker mb-6">
+          <h4 className="text-md font-medium mb-3 text-gray-700 flex items-center gap-2">
+            <span>{section.icon}</span>
+            {section.name}
+            <span className="text-sm text-gray-500">
+              ({colors.find(c => c.color === cabinetColors[section.key])?.name})
+            </span>
+          </h4>
+          
+          <div className="grid grid-cols-6 gap-2">
+            {colors.map((colorOption) => (
+              <button
+                key={`${section.key}-${colorOption.name}`}
+                className={`
+                  w-10 h-10 rounded-lg border-2 transition-all duration-200 hover:scale-110 relative
+                  ${cabinetColors[section.key] === colorOption.color 
+                    ? 'border-blue-500 shadow-lg ring-2 ring-blue-200' 
+                    : 'border-gray-300 hover:border-gray-400'
+                  }
+                `}
+                style={{ backgroundColor: colorOption.color }}
+                onClick={() => onColorChange(section.key, colorOption.color)}
+                title={`${section.name}: ${colorOption.name}`}
+              >
+                {cabinetColors[section.key] === colorOption.color && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-4 h-4 border-2 border-white rounded-full bg-blue-500 flex items-center justify-center">
+                      <span className="text-white text-xs">✓</span>
+                    </div>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+      
+      <div className="preset-combinations mt-6 pt-4 border-t border-gray-200">
+        <h4 className="text-md font-medium mb-3 text-gray-700">Popular Combinations</h4>
+        <div className="space-y-2">
+          <button 
+            className="w-full p-2 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => {
+              onColorChange('upper', '#FFFFFF');
+              onColorChange('middle', '#374151');
+              onColorChange('lower', '#1F2937');
+            }}
           >
-            {selectedColor === colorOption.color && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 border-2 border-white rounded-full bg-blue-500 flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-              </div>
-            )}
+            <span className="font-medium">Modern Contrast:</span> White + Charcoal + Black
           </button>
-        ))}
-      </div>
-      <div className="mt-3">
-        <p className="text-sm text-gray-600">
-          Selected: <strong>{colors.find(c => c.color === selectedColor)?.name}</strong>
-        </p>
+          <button 
+            className="w-full p-2 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => {
+              onColorChange('upper', '#D2B48C');
+              onColorChange('middle', '#8B4513');
+              onColorChange('lower', '#654321');
+            }}
+          >
+            <span className="font-medium">Natural Wood:</span> Oak + Cherry + Walnut
+          </button>
+          <button 
+            className="w-full p-2 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => {
+              onColorChange('upper', '#E5E7EB');
+              onColorChange('middle', '#FFFFFF');
+              onColorChange('lower', '#9CAF88');
+            }}
+          >
+            <span className="font-medium">Soft Modern:</span> Light Gray + White + Sage
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -517,7 +548,7 @@ function ColorPicker({ selectedColor, onColorChange }) {
 // Model Selector Component
 function ModelSelector({ currentModel, onModelChange }) {
   const models = [
-    { id: 'galley', name: 'Galley Kitchen', description: 'Classic parallel layout with island' },
+    { id: 'galley', name: 'Galley Kitchen', description: 'Modern parallel layout with island' },
     { id: 'lshape', name: 'L-Shape Kitchen', description: 'Efficient corner design' },
     { id: 'island', name: 'Island Kitchen', description: 'Open concept with large island' }
   ];
@@ -551,18 +582,29 @@ function ModelSelector({ currentModel, onModelChange }) {
 
 // Main App Component
 function App() {
-  const [cabinetColor, setCabinetColor] = useState('#D2B48C'); // Default oak color
+  const [cabinetColors, setCabinetColors] = useState({
+    upper: '#FFFFFF',    // White upper cabinets
+    middle: '#374151',   // Dark gray countertops  
+    lower: '#1F2937'     // Dark lower cabinets
+  });
   const [currentModel, setCurrentModel] = useState('galley');
+
+  const handleColorChange = (section, color) => {
+    setCabinetColors(prev => ({
+      ...prev,
+      [section]: color
+    }));
+  };
 
   return (
     <div className="app">
       {/* Header */}
       <header className="app-header">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Premium 3D Kitchen Designer
+          Modern 3D Kitchen Designer
         </h1>
         <p className="text-gray-600 mb-6">
-          Explore sophisticated kitchen designs with detailed cabinets, hardware, and finishes
+          Realistic kitchen models with independent color control for upper, middle, and lower sections
         </p>
       </header>
 
@@ -588,7 +630,7 @@ function App() {
               shadow-camera-bottom={-10}
             />
             <pointLight position={[0, 5, 0]} intensity={0.5} />
-            <KitchenModel cabinetColor={cabinetColor} currentModel={currentModel} />
+            <KitchenModel cabinetColors={cabinetColors} currentModel={currentModel} />
             <OrbitControls 
               enablePan={true}
               enableZoom={true}
@@ -609,50 +651,31 @@ function App() {
             currentModel={currentModel} 
             onModelChange={setCurrentModel} 
           />
-          <ColorPicker 
-            selectedColor={cabinetColor} 
-            onColorChange={setCabinetColor} 
+          <MultiSectionColorPicker 
+            cabinetColors={cabinetColors} 
+            onColorChange={handleColorChange} 
           />
-          
-          {/* Features List */}
-          <div className="features-list">
-            <h3 className="text-lg font-semibold mb-3 text-gray-800">Cabinet Features</h3>
-            <div className="text-sm text-gray-600 space-y-2">
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span>Detailed door frames & panels</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span>Premium hardware & handles</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span>Crown molding on uppers</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span>Toe kicks on base cabinets</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span>Mixed door & drawer configurations</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span>Realistic proportions & spacing</span>
-              </div>
-            </div>
-          </div>
           
           {/* Instructions */}
           <div className="instructions">
-            <h3 className="text-lg font-semibold mb-3 text-gray-800">3D Controls</h3>
-            <div className="text-sm text-gray-600 space-y-1">
-              <p>• <strong>Rotate:</strong> Click and drag to orbit</p>
-              <p>• <strong>Zoom:</strong> Mouse wheel or pinch</p>
-              <p>• <strong>Pan:</strong> Right-click and drag</p>
-              <p>• <strong>Reset:</strong> Double-click to center</p>
+            <h3 className="text-lg font-semibold mb-3 text-gray-800">Features</h3>
+            <div className="text-sm text-gray-600 space-y-2">
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span>Separate color control for 3 sections</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span>Modern sleek cabinet designs</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span>Realistic proportions & hardware</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span>Popular color combination presets</span>
+              </div>
             </div>
           </div>
         </div>
