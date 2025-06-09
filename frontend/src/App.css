@@ -40,10 +40,10 @@ body {
 /* Main Content Layout */
 .app-content {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 380px;
   gap: 2rem;
   flex: 1;
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   width: 100%;
 }
@@ -53,9 +53,10 @@ body {
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  height: 600px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  height: 650px;
   position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .kitchen-canvas {
@@ -68,16 +69,17 @@ body {
   background: white;
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   height: fit-content;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Color Picker Styles */
 .color-picker {
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -86,9 +88,30 @@ body {
   color: #374151;
 }
 
+.color-picker .grid {
+  margin-bottom: 1rem;
+}
+
+.color-picker button {
+  position: relative;
+  overflow: hidden;
+}
+
+.color-picker button::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 6px;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  pointer-events: none;
+}
+
 /* Model Selector Styles */
 .model-selector {
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -97,9 +120,28 @@ body {
   color: #374151;
 }
 
+.model-selector button {
+  border: 1px solid transparent;
+}
+
+.model-selector button:hover {
+  border-color: #d1d5db;
+}
+
+/* Features List Styles */
+.features-list {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.features-list h3 {
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
 /* Instructions Styles */
 .instructions {
-  background: #f9fafb;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
@@ -115,7 +157,70 @@ body {
   line-height: 1.5;
 }
 
+/* Enhanced Animations */
+.app-content > * {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.color-picker button,
+.model-selector button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.color-picker button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.model-selector button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading Animation for 3D Scene */
+.viewer-container::before {
+  content: 'Loading Premium Kitchen Models...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color: #6b7280;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  animation: loadingPulse 2s infinite;
+  font-size: 1.1rem;
+}
+
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.7; }
+}
+
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .app-content {
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+  }
+  
+  .controls-panel {
+    padding: 1.5rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .app-content {
     grid-template-columns: 1fr;
@@ -156,66 +261,30 @@ body {
   }
   
   .color-picker .grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
   }
   
   .color-picker button {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3rem;
+    height: 3rem;
   }
 }
 
-/* Animation and Transition Effects */
-.app-content > * {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Button Hover Effects */
-button {
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-  border: none;
-  outline: none;
-}
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-/* Loading Animation for 3D Scene */
-.viewer-container::before {
-  content: 'Loading 3D Kitchen...';
+/* Premium UI Enhancements */
+.controls-panel::before {
+  content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  color: #6b7280;
-  font-weight: 500;
-  pointer-events: none;
-  opacity: 0;
-  animation: loadingPulse 2s infinite;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px 16px 0 0;
 }
 
-@keyframes loadingPulse {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+.controls-panel {
+  position: relative;
 }
 
 /* Scrollbar Styling */
@@ -229,10 +298,25 @@ button:active {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+/* Subtle glow effects */
+.viewer-container {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.controls-panel {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
